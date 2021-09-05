@@ -1,20 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import SocialButton from '../../components/SocialButton';
 import { loginGoogle } from '../../http/login';
+
+//react-router-dom
+import { useHistory } from 'react-router-dom';
 
 //mobX-react-lite  && store
 import Auth from './../../store/Auth';
 
 //material-ui
-import Button from '@material-ui/core/Button';
 import { observer } from 'mobx-react-lite';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 
 const AuthContainer = observer(() => {
+	const history = useHistory();
+
+	useEffect(() => {
+		if (Auth.getAuth || Auth.getUser) {
+			return history.push('/profile');
+		}
+	}, []);
+
 	const handleSocialLogin = async user => {
 		Auth.setLoading(true);
-		loginGoogle(user).then(({ data }) => {
+		await loginGoogle(user).then(({ data }) => {
 			Auth.setUser(data.data);
 			Auth.setAuth(true);
 			Auth.setAccessToken(data.accessToken);
@@ -26,65 +35,24 @@ const AuthContainer = observer(() => {
 		});
 	};
 
-	const handleSocialLoginFailure = err => {
+	const handleSocialLoginFailure = async err => {
 		console.error(err);
 	};
 
-	const logout = async () => {
-		Auth.setLoading(true);
-		Auth.setUser(null);
-		Auth.setAuth(false);
-		Auth.setAccessToken(null);
-		localStorage.removeItem('accessToken');
-
-		return Auth.setLoading(false);
-	};
-
 	return (
-		<>
-			{Auth.getAuth && Auth.getUser ? (
-				<Grid
-					container
-					direction='column'
-					alignItems='center'
-					spacing={2}
+		<Grid container direction='column' alignItems='center' spacing={2}>
+			<Grid>
+				<SocialButton
+					provider='google'
+					/* eslint-disable-next-line no-undef */
+					appId={process.env.REACT_APP_GOOGLE_API}
+					onLoginSuccess={handleSocialLogin}
+					onLoginFailure={handleSocialLoginFailure}
 				>
-					<Grid>
-						<Typography variant='h6'>
-							Hi, {Auth.getUser.name}
-							<br />
-						</Typography>
-					</Grid>
-					<Grid>
-						<Button
-							variant='contained'
-							color='secondary'
-							onClick={logout}
-						>
-							Logout?
-						</Button>
-					</Grid>
-				</Grid>
-			) : (
-				<Grid
-					container
-					direction='column'
-					alignItems='center'
-					spacing={2}
-				>
-					<Grid>
-						<SocialButton
-							provider='google'
-							appId={process.env.REACT_APP_GOOGLE_API}
-							onLoginSuccess={handleSocialLogin}
-							onLoginFailure={handleSocialLoginFailure}
-						>
-							Login with Google
-						</SocialButton>
-					</Grid>
-				</Grid>
-			)}
-		</>
+					Login with Google
+				</SocialButton>
+			</Grid>
+		</Grid>
 	);
 });
 

@@ -25,7 +25,6 @@ const SortBar = ({ requestSort, getClassNamesFor }) => {
 						onClick={() => requestSort(item)}
 						className={getClassNamesFor(item)}
 					>
-						{' '}
 						{item}
 					</Button>
 				))}

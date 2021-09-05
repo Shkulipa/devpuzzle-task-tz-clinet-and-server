@@ -1,17 +1,22 @@
 import React, { useEffect } from 'react';
 
+//react-router-dom:
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
+//custom components:
 import AuthContainer from './pages/auth/AuthContainer';
 import HomeContainer from './pages/home/HomeContainer';
 import NavBar from './components/NavBar/NavBar';
+import Profile from './pages/profile/profile';
+import NotFound404 from './pages/404/notFound404';
 
-//http
+//http:
 import { refreshHttp } from './http/refresh';
 
-//material-ui
+//material-ui:
 import Container from '@material-ui/core/Container';
 
-//mobX-react-lite  && store
+//mobX-react-lite  && store:
 import { observer } from 'mobx-react-lite';
 import Auth from './store/Auth';
 
@@ -30,7 +35,7 @@ const App = observer(() => {
 			Auth.setAccessToken(accessTokenLocalStorage.token);
 		}
 
-		if (!Auth.getUser && Auth.getAccessToken) {
+		if (!Auth.getUser && accessTokenLocalStorageString) {
 			(async () => {
 				await refreshHttp();
 			})();
@@ -61,6 +66,14 @@ const App = observer(() => {
 						</Route>
 						<Route path='/auth'>
 							<AuthContainer />
+						</Route>
+						{Auth.getUser && Auth.getAuth ? (
+							<Route path='/profile'>
+								<Profile />
+							</Route>
+						) : null}
+						<Route path='*'>
+							<NotFound404 />
 						</Route>
 					</Switch>
 				</Container>

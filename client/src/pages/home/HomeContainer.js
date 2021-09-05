@@ -15,8 +15,9 @@ import useSortAbleData from '../../hooks/useSortAbleData';
 //store
 import Auth from '../../store/Auth';
 import { refreshHttp } from '../../http/refresh';
+import { observer } from 'mobx-react-lite';
 
-const HomeContainer = () => {
+const HomeContainer = observer(() => {
 	const history = useHistory();
 
 	//user list
@@ -61,7 +62,7 @@ const HomeContainer = () => {
 					history.push('/');
 				});
 		}
-	}, [usersListAuthUser]);
+	}, [Auth.getAuth]);
 
 	const getClassNamesFor = name => {
 		if (!sortConfig) {
@@ -183,6 +184,6 @@ const HomeContainer = () => {
 			/>
 		</>
 	);
-};
+});
 
 export default HomeContainer;

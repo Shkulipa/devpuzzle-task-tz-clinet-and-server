@@ -29,10 +29,21 @@ export const refreshHttp = async accessToken => {
 					JSON.stringify(res.data.accessToken)
 				);
 			})
+			.catch(err => {
+				console.error(err);
+				Auth.setUser(false);
+				Auth.setAuth(false);
+				Auth.setAccessToken('');
+				localStorage.removeItem('accessToken');
+			})
 			.finally(() => {
 				Auth.setLoading(false);
 			});
 	} catch (e) {
+		Auth.setUser(false);
+		Auth.setAuth(false);
+		Auth.setAccessToken('');
+		localStorage.removeItem('accessToken');
 		return console.error(e);
 	}
 };

@@ -8,7 +8,7 @@ const useSortAbleData = (
 
 	const sortedItems = React.useMemo(() => {
 		let sortableItems = [...items];
-		if (sortConfig !== null) {
+		if (sortConfig) {
 			if (sortConfig.key === 'address') {
 				sortableItems.sort((a, b) => {
 					if (a[sortConfig.key]['city'] < b[sortConfig.key]['city']) {
