@@ -14,11 +14,11 @@ export const refreshHttp = async accessToken => {
 				}
 			)
 			.then(res => {
-				if (res.error) {
-					Auth.setUser(false);
+				if (res.data.error) {
+					Auth.setUser(null);
 					Auth.setAuth(false);
-					Auth.setAccessToken('');
-					localStorage.removeItem('accessToken');
+					Auth.setAccessToken(null);
+					return localStorage.clear();
 				}
 
 				Auth.setUser(res.data.data);
@@ -31,19 +31,19 @@ export const refreshHttp = async accessToken => {
 			})
 			.catch(err => {
 				console.error(err);
-				Auth.setUser(false);
+				Auth.setUser(null);
 				Auth.setAuth(false);
-				Auth.setAccessToken('');
-				localStorage.removeItem('accessToken');
+				Auth.setAccessToken(null);
+				localStorage.clear();
 			})
 			.finally(() => {
 				Auth.setLoading(false);
 			});
 	} catch (e) {
-		Auth.setUser(false);
+		Auth.setUser(null);
 		Auth.setAuth(false);
-		Auth.setAccessToken('');
-		localStorage.removeItem('accessToken');
+		Auth.setAccessToken(null);
+		localStorage.clear();
 		return console.error(e);
 	}
 };

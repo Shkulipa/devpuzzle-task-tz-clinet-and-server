@@ -26,18 +26,16 @@ import Loader from 'react-loader-spinner';
 const App = observer(() => {
 	useEffect(() => {
 		const accessTokenLocalStorageString =
-			localStorage.getItem('accessToken') || null;
+			localStorage.getItem('accessToken');
 
-		if (accessTokenLocalStorageString) {
+		if (!Auth.getUser && accessTokenLocalStorageString) {
 			const accessTokenLocalStorage = JSON.parse(
 				accessTokenLocalStorageString
 			);
 			Auth.setAccessToken(accessTokenLocalStorage.token);
-		}
 
-		if (!Auth.getUser && accessTokenLocalStorageString) {
 			(async () => {
-				await refreshHttp();
+				await refreshHttp(accessTokenLocalStorage);
 			})();
 		}
 	}, []);

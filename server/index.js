@@ -1,23 +1,23 @@
 // imports
-require("dotenv").config();
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require("cors");
+const cors = require('cors');
 const router = require('./routers/index');
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
 
 //options
 const app = express();
 
 //middlewares
-app.use(cors(
-	{
+app.use(
+	cors({
 		origin: true,
-		credentials: true
+		credentials: true,
 	})
 );
 app.use(express.json());
-app.use(cookieParser())
+app.use(cookieParser());
 
 //router
 app.use('/api', router);
@@ -32,7 +32,7 @@ app.use('/api', router);
 				console.log('0: disconnected DB');
 				break;
 			case 1:
-				console.log('1: connected DB')
+				console.log('1: connected DB');
 				break;
 			case 2:
 				console.log('2: connecting DB');
@@ -44,12 +44,12 @@ app.use('/api', router);
 				console.log('Other');
 		}
 
-		await app.listen(
-			process.env.PORT,
-			() => console.log(`Example app listening at http://${process.env.HOST}:${process.env.PORT}`)
+		await app.listen(process.env.PORT, () =>
+			console.log(
+				`Example app listening at http://${process.env.HOST}:${process.env.PORT}`
+			)
 		);
 	} catch (e) {
 		console.error(e);
 	}
-
 })();

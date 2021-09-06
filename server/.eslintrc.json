@@ -1,0 +1,44 @@
+{
+    "env": {
+        "commonjs": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": [
+        "prettier",
+        "eslint:recommended"
+    ],
+    "plugins": [
+        "prettier"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 12
+    },
+    "ignorePatterns": [
+        "**/package.json",
+        "**/package-lock.json",
+        "**/.eslintrc.json"
+    ],
+    "rules": {
+        "prettier/prettier": [
+            "error",
+            {
+                "printWidth": 80,
+                "tabWidth": 4,
+                "useTabs": true,
+                "jsxSingleQuote": false,
+                "singleQuote": true,
+                "trailingComma": "es5",
+                "semi": true,
+                "endOfLine": "auto",
+                "bracketSpacing": true,
+                "jsxBracketSameLine": false,
+                "arrowParens": "avoid",
+                "fileInfoOptions": {
+                    "withNodeModules": true
+                }
+            }
+        ]
+
+    }
+}

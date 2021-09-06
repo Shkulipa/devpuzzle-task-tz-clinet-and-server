@@ -7,8 +7,8 @@ const cardRouter = require('./cardRouter');
 const loginRouter = require('./loginRouter');
 const tokensRouter = require('./tokensRouter');
 
-router.use('/cards', cardRouter)
-router.use('/login', loginRouter)
-router.use('/tokens', tokensRouter)
+router.use('/cards', cardRouter);
+router.use('/login', loginRouter);
+router.use('/tokens', tokensRouter);
 
 module.exports = router;
