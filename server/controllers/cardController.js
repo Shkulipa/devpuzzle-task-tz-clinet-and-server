@@ -1,13 +1,11 @@
-const Cards = require('./../models/cards');
-const Users = require('./../models/users');
+const userService = require('../services/userService');
+const cardsService = require('../services/cardService');
 
 const getCards = async (req, res) => {
 	try {
 		const { email } = req.user;
-		const { _id } = await Users.findOne({ email });
-		const cardsUser = await Cards.find({ userId: _id }).sort([
-			['date', -1],
-		]);
+		const { _id } = await userService.userFind({ email });
+		const cardsUser = await cardsService.cardFind({ userId: _id }, 'date');
 		return res.json(cardsUser);
 	} catch (e) {
 		console.error(e);
@@ -18,10 +16,9 @@ const getCards = async (req, res) => {
 const addCard = async (req, res) => {
 	try {
 		const { card, userId } = req.body;
-
-		const cardFind = await Cards.findOne({ id: card.id });
+		const cardFind = await cardsService.cardFindOne({ id: card.id });
 		if (!cardFind) {
-			await new Cards({
+			await cardsService.cardCreate({
 				id: card.id,
 				email: card.email,
 				name: card.name,
@@ -29,9 +26,10 @@ const addCard = async (req, res) => {
 				address: card.address.city,
 				website: card.address.website,
 				userId,
-			}).save();
+			});
 
-			const cardsUsers = await Cards.find({ userId });
+			const cardsUsers = await cardsService.cardFind({ userId });
+
 			return res.json({
 				error: false,
 				data: cardsUsers,
